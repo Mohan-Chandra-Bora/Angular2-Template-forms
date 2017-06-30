@@ -1,0 +1,68 @@
+<div class="container">
+<h3>Employee Form</h3>
+<form #form="ngForm" (submit)="submitForm(form)" novalidate>
+    
+    <div class="form-group"[class.has-error]="firstName.invalid && firstName.dirty">
+        <label class="control-label">First Name</label>
+    <input #firstName="ngModel" type="text" class="form-control" required name="firstName"
+     [ngModel]="model.firstName"
+     (ngModelChange)="firstNameToUpperCase($event)"/>
+     <div *ngIf="firstName.invalid && firstName.dirty" class="alert alert-danger">First Name is Required</div>
+    </div>
+    
+
+    <div class="form-group">
+        <label>Last Name</label>
+    <input #lastName="ngModel" type="text" class="form-control" required name="lastName" 
+    [(ngModel)]="model.lastName"/>
+        <div *ngIf="lastName.invalid && lastName.dirty" class="alert alert-danger">Last Name is Required</div>
+    </div>
+
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" name="is-full-time" 
+            [(ngModel)]="model.isFullTime">
+            Full Time Employee
+        </label>
+    </div>
+
+    <label>Payment Type</label>
+    <div class="radio">
+        <label>
+            <input type="radio" name="pay-type" value="W2" checked [(ngModel)]="model.paymentType">W2
+        </label>
+    </div>
+    <div class="radio">
+        <label>
+            <input type="radio" name="pay-type" value="1099"[(ngModel)]="model.paymentType">1099
+        </label>
+    </div>
+
+    
+    <div class="form-group" [class.has-error]="hasPrimaryLanguageError">
+        <label class="control-label">Primary Language</label>
+        <select class="form-control" #primaryLanguage
+        (blur)="validatePrimaryLanguge(primaryLanguage.value)"
+        (change)="validatePrimaryLanguge(primaryLanguage.value)"
+        name="primaryLanguage" [(ngModel)]="model.primaryLanguage">
+        <option value="default">Select Language...</option>
+            <option *ngFor = "let lang of languages | async">
+                {{lang}}
+            </option>
+        </select>
+    </div>
+<!--
+    <div class="form-group">
+        <label>Date Hired</label>
+    <input type="Date" class="form-control"/>
+    </div>
+ -->   
+    
+    <button class="btn btn-primary" type="submit"
+    [disabled]="form.invalid">Ok</button>
+</form>
+
+Model:{{model|json}}
+Angular:{{form.value|json}}
+
+</div>
